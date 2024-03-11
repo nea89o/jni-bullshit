@@ -1,3 +1,5 @@
+.PHONY: runJLP runJLPDeps runLDP clean
+
 Test.o: Test.c Test.h b.h
 	gcc -c Test.c -o Test.o
 b.o: b.c b.h
@@ -15,7 +17,9 @@ Test.class: Test.java
 clean:
 	rm *.o *.class Test.h
 
+runJLPDeps: Test.class liba.so
+	java -Djava.library.path=. -classpath . Test both
 runJLP: Test.class liba.so
-	java -Djava.library.path=. -classpath . Test
+	java -Djava.library.path=. -classpath . Test onlya
 runLDP: Test.class liba.so
-	LD_LIBRARY_PATH=. java -classpath . Test
+	LD_LIBRARY_PATH=. java -classpath . Test onlya
